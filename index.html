@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop - ITS09/25 Jovan Nedeljković</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f5f0;
+            color: #4b2c20;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 0;
+            background-color: #8b4513;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(139, 69, 19, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #8b4513;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4a574;
+        }
+
+        .help-btn {
+            background-color: #d4a574;
+            color: #4b2c20;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .help-btn:hover {
+            background-color: #c18a52;
+        }
+
+        .help-message {
+            background-color: #fff8ee;
+            border-left: 5px solid #d4a574;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            display: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .menu-section, .order-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0d6cc;
+        }
+
+        th {
+            background-color: #f5ebe0;
+            color: #8b4513;
+            font-weight: 600;
+        }
+
+        .coffee-type {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f5f0;
+            border-radius: 8px;
+            border: 1px solid #e0d6cc;
+        }
+
+        .coffee-info {
+            flex: 1;
+        }
+
+        .coffee-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4b2c20;
+        }
+
+        .coffee-details {
+            color: #7a5c3c;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            background-color: #8b4513;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background-color: #6b3410;
+        }
+
+        .quantity-display {
+            width: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 10px;
+            background-color: white;
+            border: 1px solid #d4a574;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .summary-section {
+            background-color: #f5ebe0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #d4a574;
+        }
+
+        .summary-label {
+            font-weight: 600;
+            color: #4b2c20;
+        }
+
+        .summary-value {
+            font-weight: bold;
+            color: #8b4513;
+        }
+
+        .summary-value input {
+            width: 150px;
+            padding: 8px;
+            text-align: right;
+            font-weight: bold;
+            border: 1px solid #d4a574;
+            border-radius: 5px;
+            background-color: white;
+            color: #8b4513;
+        }
+
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        #clear-btn {
+            background-color: #e0d6cc;
+            color: #4b2c20;
+        }
+
+        #clear-btn:hover {
+            background-color: #d0c4b8;
+        }
+
+        #complete-btn {
+            background-color: #8b4513;
+            color: white;
+        }
+
+        #complete-btn:hover {
+            background-color: #6b3410;
+        }
+
+        .order-confirmation {
+            background-color: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            border-left: 5px solid #4caf50;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .confirmation-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .confirmation-message {
+            color: #1b5e20;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0d6cc;
+            color: #7a5c3c;
+            font-size: 0.9rem;
+        }
+
+        .student-info {
+            font-weight: bold;
+            color: #8b4513;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .coffee-type {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .quantity-controls {
+                margin-top: 15px;
+                align-self: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>☕ Coffee Shop</h1>
+        <p>Kliknite za uputstva • Pritisnite + za dodavanje šolje • Pritisnite - za uklanjanje šolje</p>
+        <button id="help-button" class="help-btn">Prikaži pomoć</button>
+    </header>
+
+    <div id="help-message" class="help-message">
+        <h3>Uputstvo za korišćenje:</h3>
+        <ul>
+            <li>Koristite <strong>+</strong> dugme za povećanje broja šolja za odabranu vrstu kafe</li>
+            <li>Koristite <strong>-</strong> dugme za smanjenje broja šolja (ne može ispod 0)</li>
+            <li>Klikom na <strong>Complete order</strong> potvrđujete narudžbinu i dobijate ukupan iznos</li>
+            <li>Klikom na <strong>Clear</strong> poništavate narudžbinu i počinjete iz početka</li>
+            <li>Za uspešnu narudžbinu potrebno je naručiti barem jednu šolju bilo koje vrste kafe</li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <section class="menu-section">
+            <h2>Menі</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>VRSTA</th>
+                        <th>ZAPREMINA</th>
+                        <th>CENA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tall (Mala)</td>
+                        <td>270 ml</td>
+                        <td>399 RSD</td>
+                    </tr>
+                    <tr>
+                        <td>Grande (Srednja)</td>
+                        <td>360 ml</td>
+                        <td>450 RSD</td>
+                    </tr>
+                    <tr>
+                        <td>Venti (Velika)</td>
+                        <td>450 ml</td>
+                        <td>599 RSD</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="coffee-type">
+                <div class="coffee-info">
+                    <div class="coffee-title">Tall (Mala)</div>
+                    <div class="coffee-details">270 ml • 399 RSD</div>
+                </div>
+                <div class="quantity-controls">
+                    <button id="tall-minus" class="quantity-btn">-</button>
+                    <input type="text" id="tall-quantity" class="quantity-display" value="0" readonly>
+                    <button id="tall-plus" class="quantity-btn">+</button>
+                </div>
+            </div>
+
+            <div class="coffee-type">
+                <div class="coffee-info">
+                    <div class="coffee-title">Grande (Srednja)</div>
+                    <div class="coffee-details">360 ml • 450 RSD</div>
+                </div>
+                <div class="quantity-controls">
+                    <button id="grande-minus" class="quantity-btn">-</button>
+                    <input type="text" id="grande-quantity" class="quantity-display" value="0" readonly>
+                    <button id="grande-plus" class="quantity-btn">+</button>
+                </div>
+            </div>
+
+            <div class="coffee-type">
+                <div class="coffee-info">
+                    <div class="coffee-title">Venti (Velika)</div>
+                    <div class="coffee-details">450 ml • 599 RSD</div>
+                </div>
+                <div class="quantity-controls">
+                    <button id="venti-minus" class="quantity-btn">-</button>
+                    <input type="text" id="venti-quantity" class="quantity-display" value="0" readonly>
+                    <button id="venti-plus" class="quantity-btn">+</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="order-section">
+            <h2>Vaša narudžbina</h2>
+            
+            <div class="summary-section">
+                <div class="summary-row">
+                    <div class="summary-label">Ukupno šolja:</div>
+                    <div class="summary-value">
+                        <input type="text" id="total-cups" value="0" readonly>
+                    </div>
+                </div>
+                
+                <div class="summary-row">
+                    <div class="summary-label">Cena:</div>
+                    <div class="summary-value">
+                        <input type="text" id="price" value="0.00" readonly>
+                    </div>
+                </div>
+                
+                <div class="summary-row">
+                    <div class="summary-label">Stopa PDV-a (20%):</div>
+                    <div class="summary-value">
+                        <input type="text" id="tax-rate" value="0.00" readonly>
+                    </div>
+                </div>
+                
+                <div class="summary-row">
+                    <div class="summary-label">Ukupan iznos:</div>
+                    <div class="summary-value">
+                        <input type="text" id="total-amount" value="0.00" readonly>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="buttons-container">
+                <button id="clear-btn" class="action-btn">Clear</button>
+                <button id="complete-btn" class="action-btn">Complete order</button>
+            </div>
+            
+            <div id="order-confirmation" class="order-confirmation">
+                <div class="confirmation-title">✅ Narudžbina je uspešno obrađena!</div>
+                <div class="confirmation-message" id="confirmation-message">
+                    <!-- Poruka će se dinamički popuniti -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="student-info">Jovan Nedeljković • ITS09/25 • Klijentske tehnologije</div>
+        <div>Side Task 3 - Coffee Shop Ordering System</div>
+    </footer>
+
+    <script>
+        // Konstante definisane na početku kako je traženo
+        const TALL_PRICE = 399;
+        const GRANDE_PRICE = 450;
+        const VENTI_PRICE = 599;
+        const TAX_RATE = 0.20; // PDV 20%
+        
+        // Elementi za količine
+        const tallQuantityInput = document.getElementById('tall-quantity');
+        const grandeQuantityInput = document.getElementById('grande-quantity');
+        const ventiQuantityInput = document.getElementById('venti-quantity');
+        
+        // Dugmad za povećavanje i smanjivanje
+        const tallPlusBtn = document.getElementById('tall-plus');
+        const tallMinusBtn = document.getElementById('tall-minus');
+        const grandePlusBtn = document.getElementById('grande-plus');
+        const grandeMinusBtn = document.getElementById('grande-minus');
+        const ventiPlusBtn = document.getElementById('venti-plus');
+        const ventiMinusBtn = document.getElementById('venti-minus');
+        
+        // Elementi za rezultate
+        const totalCupsInput = document.getElementById('total-cups');
+        const priceInput = document.getElementById('price');
+        const taxRateInput = document.getElementById('tax-rate');
+        const totalAmountInput = document.getElementById('total-amount');
+        
+        // Dugmad za akcije
+        const clearBtn = document.getElementById('clear-btn');
+        const completeBtn = document.getElementById('complete-btn');
+        
+        // Poruka potvrde
+        const orderConfirmation = document.getElementById('order-confirmation');
+        const confirmationMessage = document.getElementById('confirmation-message');
+        
+        // Help elementi
+        const helpButton = document.getElementById('help-button');
+        const helpMessage = document.getElementById('help-message');
+        
+        // Prikaz pomoći prilikom otvaranja stranice
+        window.addEventListener('load', function() {
+            helpMessage.style.display = 'block';
+        });
+        
+        // Toggle za help poruku
+        helpButton.addEventListener('click', function() {
+            if (helpMessage.style.display === 'block') {
+                helpMessage.style.display = 'none';
+                helpButton.textContent = 'Prikaži pomoć';
+            } else {
+                helpMessage.style.display = 'block';
+                helpButton.textContent = 'Sakrij pomoć';
+            }
+        });
+        
+        // Funkcija za ažuriranje količine
+        function updateQuantity(input, change) {
+            let currentValue = parseInt(input.value);
+            let newValue = currentValue + change;
+            
+            // Ne dozvoljava negativne vrednosti
+            if (newValue < 0) {
+                newValue = 0;
+            }
+            
+            input.value = newValue;
+            updateOrderSummary();
+        }
+        
+        // Funkcija za ažuriranje narudžbine
+        function updateOrderSummary() {
+            // Uzimanje trenutnih količina
+            const tallQty = parseInt(tallQuantityInput.value);
+            const grandeQty = parseInt(grandeQuantityInput.value);
+            const ventiQty = parseInt(ventiQuantityInput.value);
+            
+            // Izračunavanje ukupnog broja šolja
+            const totalCups = tallQty + grandeQty + ventiQty;
+            
+            // Izračunavanje ukupne cene
+            const totalPrice = (tallQty * TALL_PRICE) + (grandeQty * GRANDE_PRICE) + (ventiQty * VENTI_PRICE);
+            
+            // Izračunavanje poreza
+            const taxAmount = totalPrice * TAX_RATE;
+            
+            // Izračunavanje ukupnog iznosa
+            const totalAmount = totalPrice + taxAmount;
+            
+            // Ažuriranje polja
+            totalCupsInput.value = totalCups;
+            priceInput.value = totalPrice.toFixed(2);
+            taxRateInput.value = taxAmount.toFixed(2);
+            totalAmountInput.value = totalAmount.toFixed(2);
+            
+            // Sakrivanje poruke potvrde kada se menja narudžbina
+            orderConfirmation.style.display = 'none';
+        }
+        
+        // Funkcija za validaciju narudžbine
+        function validateOrder() {
+            const tallQty = parseInt(tallQuantityInput.value);
+            const grandeQty = parseInt(grandeQuantityInput.value);
+            const ventiQty = parseInt(ventiQuantityInput.value);
+            
+            // Provera da li je naručena barem jedna šolja kafe
+            if (tallQty === 0 && grandeQty === 0 && ventiQty === 0) {
+                alert("Molimo Vas da naručite barem jednu šolju kafe (Tall, Grande ili Venti) pre nego što potvrdite narudžbinu.");
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Funkcija za potvrdu narudžbine
+        function completeOrder() {
+            // Validacija
+            if (!validateOrder()) {
+                return;
+            }
+            
+            // Prikazivanje poruke potvrde
+            const tallQty = parseInt(tallQuantityInput.value);
+            const grandeQty = parseInt(grandeQuantityInput.value);
+            const ventiQty = parseInt(ventiQuantityInput.value);
+            const totalCups = tallQty + grandeQty + ventiQty;
+            const totalAmount = parseFloat(totalAmountInput.value);
+            
+            let message = `Naručili ste ${totalCups} šolj${totalCups === 1 ? 'u' : totalCups % 10 >= 2 && totalCups % 10 <= 4 ? 'e' : 'a'} kafe.`;
+            
+            // Dodavanje detalja o količini po vrstama
+            if (tallQty > 0) message += `<br>• Tall: ${tallQty} šolj${tallQty === 1 ? 'a' : tallQty % 10 >= 2 && tallQty % 10 <= 4 ? 'e' : 'a'}`;
+            if (grandeQty > 0) message += `<br>• Grande: ${grandeQty} šolj${grandeQty === 1 ? 'a' : grandeQty % 10 >= 2 && grandeQty % 10 <= 4 ? 'e' : 'a'}`;
+            if (ventiQty > 0) message += `<br>• Venti: ${ventiQty} šolj${ventiQty === 1 ? 'a' : ventiQty % 10 >= 2 && ventiQty % 10 <= 4 ? 'e' : 'a'}`;
+            
+            message += `<br><br>Ukupan iznos: <strong>${totalAmount.toFixed(2)} RSD</strong>`;
+            
+            confirmationMessage.innerHTML = message;
+            orderConfirmation.style.display = 'block';
+            
+            // Skrolovanje do poruke potvrde
+            orderConfirmation.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Funkcija za resetovanje narudžbine
+        function clearOrder() {
+            // Resetovanje količina
+            tallQuantityInput.value = 0;
+            grandeQuantityInput.value = 0;
+            ventiQuantityInput.value = 0;
+            
+            // Resetovanje sumarnih polja
+            totalCupsInput.value = 0;
+            priceInput.value = "0.00";
+            taxRateInput.value = "0.00";
+            totalAmountInput.value = "0.00";
+            
+            // Sakrivanje poruke potvrde
+            orderConfirmation.style.display = 'none';
+            
+            // Fokusiranje na prvo dugme
+            tallPlusBtn.focus();
+        }
+        
+        // Dodavanje event listenera za dugmad
+        tallPlusBtn.addEventListener('click', () => updateQuantity(tallQuantityInput, 1));
+        tallMinusBtn.addEventListener('click', () => updateQuantity(tallQuantityInput, -1));
+        
+        grandePlusBtn.addEventListener('click', () => updateQuantity(grandeQuantityInput, 1));
+        grandeMinusBtn.addEventListener('click', () => updateQuantity(grandeQuantityInput, -1));
+        
+        ventiPlusBtn.addEventListener('click', () => updateQuantity(ventiQuantityInput, 1));
+        ventiMinusBtn.addEventListener('click', () => updateQuantity(ventiQuantityInput, -1));
+        
+        clearBtn.addEventListener('click', clearOrder);
+        completeBtn.addEventListener('click', completeOrder);
+        
+        // Inicijalno ažuriranje prikaza
+        updateOrderSummary();
+    </script>
+</body>
+</html>
